@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-<title>um convite</title>
+<title>uma pesquisa</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500&display=swap');
 
@@ -39,7 +39,7 @@ overscroll-behavior:none;
 
 .stage{
 width:100%;
-max-width:440px;
+max-width:460px;
 text-align:center;
 position:relative;
 z-index:2;
@@ -51,21 +51,102 @@ letter-spacing:.28em;
 text-transform:uppercase;
 color:var(--muted);
 margin-bottom:22px;
-opacity:0;
-animation:rise .8s .1s ease forwards;
 }
 
 h1{
 font-family:'Fraunces',serif;
 font-weight:400;
-font-size:clamp(2.4rem,10vw,3.4rem);
-line-height:1.05;
+line-height:1.08;
 letter-spacing:-.02em;
-margin-bottom:44px;
+}
+h1 em{ font-style:italic; color:var(--accent); }
+
+/* survey */
+#survey{ animation:rise .7s ease; }
+#survey.swap{ opacity:0; transform:translateY(10px); }
+#survey{ transition:opacity .26s ease, transform .26s ease; }
+
+#qTitle{
+font-size:clamp(2rem,8vw,2.9rem);
+margin-bottom:38px;
+}
+
+.options{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+}
+.btn-option{
+font-family:'Inter',sans-serif;
+font-size:1rem;
+font-weight:500;
+background:#fff;
+color:var(--ink);
+border:1px solid var(--line);
+border-radius:100px;
+padding:14px 24px;
+cursor:pointer;
+box-shadow:0 6px 18px -14px rgba(31,31,29,.5);
+transition:transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+touch-action:manipulation;
+}
+.btn-option:hover{ transform:translateY(-2px); border-color:var(--accent-soft); }
+.btn-option:active{ transform:translateY(0) scale(.98); }
+.btn-option.chosen{ background:var(--accent); color:#fff; border-color:var(--accent); }
+.btn-option.is-custom{ font-style:italic; color:var(--muted); }
+
+/* "outro" fill-in field */
+.custom-wrap{ display:inline-flex; align-items:center; gap:8px; }
+.custom-input{
+font-family:'Inter',sans-serif;
+font-size:1rem;
+border:1px solid var(--accent-soft);
+border-radius:100px;
+padding:14px 20px;
+width:190px;
+max-width:56vw;
+background:#fff;
+color:var(--ink);
+outline:none;
+transition:border-color .2s ease;
+}
+.custom-input:focus{ border-color:var(--accent); }
+.custom-go{
+font-family:'Inter',sans-serif;
+font-size:1.15rem;
+font-weight:500;
+background:var(--accent);
+color:#fff;
+border:none;
+border-radius:100px;
+width:48px;
+height:48px;
+cursor:pointer;
+flex:none;
+transition:transform .15s ease;
+}
+.custom-go:active{ transform:scale(.95); }
+
+.progress{
+margin-top:34px;
+font-size:.72rem;
+letter-spacing:.22em;
+text-transform:uppercase;
+color:var(--muted);
+}
+
+/* invite */
+#ask .eyebrow{
+opacity:0;
+animation:rise .8s .1s ease forwards;
+}
+#inviteText{
+font-size:clamp(1.55rem,6vw,2.2rem);
+margin-bottom:40px;
 opacity:0;
 animation:rise .8s .22s ease forwards;
 }
-h1 em{ font-style:italic; color:var(--accent); }
 
 .buttons{
 display:flex;
@@ -202,14 +283,25 @@ to{ transform:translateY(110vh) rotate(320deg); opacity:0; }
 @media (prefers-reduced-motion:reduce){
 *{ animation-duration:.001ms !important; }
 .btn-no.loose{ transition:none; }
+#survey{ transition:none; }
 }
 </style>
 </head>
 <body>
 <div class="stage">
-<div id="ask">
+
+<!-- 3-question survey -->
+<div id="survey">
+<p class="eyebrow">pesquisa rápida 🍸</p>
+<h1 id="qTitle"></h1>
+<div class="options" id="qOptions"></div>
+<p class="progress" id="qProgress"></p>
+</div>
+
+<!-- the invite, built from her answers -->
+<div id="ask" class="hidden">
 <p class="eyebrow">@isaprogin</p>
-<h1>topa <em>um date comigo?</em></h1>
+<h1 id="inviteText"></h1>
 <div class="buttons">
 <button class="btn btn-yes" id="yes">sim</button>
 <button class="btn btn-no" id="no">não</button>
@@ -217,30 +309,155 @@ to{ transform:translateY(110vh) rotate(320deg); opacity:0; }
 <p class="signature">@fe.varella</p>
 </div>
 
+<!-- confirmation -->
 <div class="confirm" id="confirm">
 <div class="mark">já to até com crise de ansiedade</div>
 <div class="sub">date confirmado</div>
 <a class="wa" id="waLink" href="#"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24Zm-2.48 4.4c-.15 0-.4.06-.6.28-.2.22-.79.77-.79 1.87s.81 2.17.92 2.32c.11.15 1.57 2.4 3.8 3.36.53.23.95.37 1.27.47.53.17 1.02.14 1.4.09.43-.06 1.32-.54 1.5-1.06.19-.52.19-.97.13-1.06-.06-.09-.2-.15-.42-.26-.22-.11-1.32-.65-1.53-.72-.2-.08-.35-.11-.5.11-.15.22-.57.72-.7.87-.13.15-.26.17-.48.06-.22-.11-.94-.35-1.79-1.11-.66-.59-1.11-1.32-1.24-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.21-.68-1.66-.18-.43-.37-.37-.5-.38h-.42Z"/></svg>abrir no whatsapp</a>
 </div>
+
 </div>
 
 <script>
 (function(){
-const WA_URL = "https://wa.me/5511991897898?text=" +
-encodeURIComponent("aceito, quando e onde?");
+const PHONE = "5511991897898";
 
-const yes = document.getElementById('yes');
-const no = document.getElementById('no');
-const ask = document.getElementById('ask');
-const confirm = document.getElementById('confirm');
-const buttons = document.querySelector('.buttons');
-const waLink = document.getElementById('waLink');
-waLink.href = WA_URL;
+// ---------- survey ----------
+const survey   = document.getElementById('survey');
+const qTitle   = document.getElementById('qTitle');
+const qOptions = document.getElementById('qOptions');
+const qProgress= document.getElementById('qProgress');
+
+const QUESTIONS = [
+{ key:'drink', title:'qual seu drink favorito?',
+  customPlaceholder:'seu drink...',
+  buildCustom:function(v){ return v; },
+  options:[
+  {label:'Negroni',       phrase:'um Negroni'},
+  {label:'Aperol Spritz', phrase:'um Aperol Spritz'},
+  {label:'Gin tônica',    phrase:'uma gin tônica'},
+  {label:'Caipirinha',    phrase:'uma caipirinha'},
+  {label:'Margarita',     phrase:'uma margarita'},
+  {label:'Outro', custom:true}
+]},
+{ key:'bar', title:'qual desses bares você prefere?',
+  customPlaceholder:'qual bar?',
+  buildCustom:function(v){ return 'no ' + v; },
+  options:[
+  {label:'Mercearia',        phrase:'no Mercearia'},
+  {label:'Domo Bar',         phrase:'no Domo Bar'},
+  {label:'Fel',              phrase:'no Fel'},
+  {label:'Lágrima Bar',      phrase:'no Lágrima Bar'},
+  {label:'Coda Bar',         phrase:'no Coda Bar'},
+  {label:'Cascasse Il Mondo',phrase:'no Cascasse Il Mondo'},
+  {label:'Outro', custom:true}
+]},
+{ key:'dia', title:'que dia você gosta de sair no fds?',
+  options:[
+  {label:'Sexta',     phrase:'numa sexta'},
+  {label:'Sábado',    phrase:'num sábado'},
+  {label:'Domingo',   phrase:'num domingo'},
+  {label:'Tanto faz 🙂', phrase:'no dia que rolar'}
+]}
+];
+
+const answers = {};
+let current = 0;
+
+function renderQuestion(i){
+const q = QUESTIONS[i];
+qTitle.textContent = q.title;
+qProgress.textContent = (i+1) + ' de ' + QUESTIONS.length;
+qOptions.innerHTML = '';
+q.options.forEach(function(opt){
+const b = document.createElement('button');
+b.className = 'btn-option';
+b.textContent = opt.label;
+if(opt.custom) b.classList.add('is-custom');
+b.addEventListener('click', function(){
+if(opt.custom){ openCustom(i, b); return; }
+b.classList.add('chosen');
+selectOption(i, opt);
+});
+qOptions.appendChild(b);
+});
+}
+
+// she picked "outro" — swap that pill for a little text field
+function openCustom(i, btn){
+if(answers.__locked) return;
+const q = QUESTIONS[i];
+const wrap = document.createElement('span');
+wrap.className = 'custom-wrap';
+const input = document.createElement('input');
+input.className = 'custom-input';
+input.type = 'text';
+input.setAttribute('autocomplete','off');
+input.placeholder = q.customPlaceholder || 'escreva aqui';
+input.maxLength = 40;
+const go = document.createElement('button');
+go.className = 'custom-go';
+go.setAttribute('aria-label','confirmar');
+go.textContent = '→';
+wrap.appendChild(input);
+wrap.appendChild(go);
+qOptions.replaceChild(wrap, btn);
+input.focus();
+function submit(){
+const v = input.value.trim();
+if(!v){ input.focus(); return; }
+selectOption(i, { label:v, phrase:q.buildCustom(v) });
+}
+go.addEventListener('click', submit);
+input.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); submit(); } });
+}
+
+function selectOption(i, opt){
+if(answers.__locked) return;
+answers.__locked = true;
+answers[QUESTIONS[i].key] = opt;
+// let her see it register, then fade to the next step
+setTimeout(function(){
+survey.classList.add('swap');
+setTimeout(function(){
+current++;
+answers.__locked = false;
+if(current < QUESTIONS.length){
+renderQuestion(current);
+survey.classList.remove('swap');
+} else {
+finishSurvey();
+}
+}, 260);
+}, 230);
+}
+
+function finishSurvey(){
+const d = answers.drink, b = answers.bar, dia = answers.dia;
+inviteText.innerHTML =
+'topa então tomar <em>' + d.phrase + ' ' + b.phrase + '</em> ' +
+'(mas pode ser outro lugar também), <em>' + dia.phrase + '</em>?';
+
+const waText = 'aceito! ' + d.phrase + ' ' + dia.phrase + ' tá perfeito 🙂 quando e onde?';
+waLink.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(waText);
+
+survey.classList.add('hidden');
+ask.classList.remove('hidden');
+}
+
+// ---------- invite + fleeing "não" ----------
+const ask        = document.getElementById('ask');
+const inviteText = document.getElementById('inviteText');
+const yes        = document.getElementById('yes');
+const no         = document.getElementById('no');
+const buttons    = ask.querySelector('.buttons');
+const confirm    = document.getElementById('confirm');
+const waLink     = document.getElementById('waLink');
 
 const phrases = ["tem certeza?","pensa melhor","opção inválida","tenta de novo","não aceito essa resposta","última chance 👀"];
 let idx = 0, yesScale = 1, loose = false;
 
-function vw(){ return (window.visualViewport && window.visualViewport.width) || window.innerWidth; }
+function vw(){ return (window.visualViewport && window.visualViewport.width)  || window.innerWidth; }
 function vh(){ return (window.visualViewport && window.visualViewport.height) || window.innerHeight; }
 
 function moveNo(e){
@@ -340,7 +557,7 @@ s.style.fontSize = (14 + Math.random()*16) + 'px';
 const dur = 2.6 + Math.random()*1.8;
 s.style.animation = 'fall ' + dur + 's linear ' + (Math.random()*0.5) + 's forwards';
 document.body.appendChild(s);
-setTimeout(()=>s.remove(), (dur+1)*1000);
+setTimeout(function(){ s.remove(); }, (dur+1)*1000);
 }
 }
 
@@ -353,6 +570,9 @@ hearts();
 }
 
 yes.addEventListener('click', accept);
+
+// start
+renderQuestion(0);
 })();
 </script>
 </body>
