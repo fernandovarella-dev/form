@@ -85,7 +85,7 @@ border:none;
 cursor:pointer;
 border-radius:100px;
 padding:17px 34px;
-transition:transform .18s ease, box-shadow .25s ease, background .25s ease;
+transition:transform .18s ease, box-shadow .25s ease, background .35s ease, color .35s ease, border-color .35s ease;
 touch-action:manipulation;
 }
 
@@ -109,6 +109,14 @@ position:fixed;
 z-index:5;
 margin:0;
 white-space:nowrap;
+}
+/* when it gives up: back in the row, morphed into a yes */
+.btn-no.gaveup{
+position:static;
+background:var(--accent);
+color:#fff;
+border-color:var(--accent);
+box-shadow:0 10px 26px -10px rgba(31,31,29,.5);
 }
 
 /* confirmation */
@@ -225,6 +233,7 @@ const yes = document.getElementById('yes');
 const no = document.getElementById('no');
 const ask = document.getElementById('ask');
 const confirm = document.getElementById('confirm');
+const buttons = document.querySelector('.buttons');
 const waLink = document.getElementById('waLink');
 waLink.href = WA_URL;
 
@@ -280,7 +289,27 @@ yesScale = Math.min(yesScale + 0.06, 1.6);
 yes.style.transform = 'scale(' + yesScale + ')';
 }
 
-function flee(e){ if(e && e.cancelable) e.preventDefault(); moveNo(e); }
+// after all phrases have been shown once, the button gives up and becomes a "sim"
+function surrender(){
+no.removeEventListener('pointerenter', flee);
+no.removeEventListener('pointerdown', flee);
+no.removeEventListener('touchstart', flee);
+no.classList.remove('loose');
+no.classList.add('gaveup');
+no.style.left = '';
+no.style.top = '';
+no.textContent = 'sim';
+buttons.appendChild(no); // back into the row, next to the real yes
+yesScale = 1;
+yes.style.transform = ''; // both buttons the same size again
+no.addEventListener('click', accept);
+}
+
+function flee(e){
+if(e && e.cancelable) e.preventDefault();
+if(idx >= phrases.length){ surrender(); return; }
+moveNo(e);
+}
 
 // pointer events cover mouse hover + touch/pen on modern browsers
 no.addEventListener('pointerenter', flee);
