@@ -357,7 +357,7 @@ const QUESTIONS = [
   {label:'Sexta',     phrase:'numa sexta'},
   {label:'Sábado',    phrase:'num sábado'},
   {label:'Domingo',   phrase:'num domingo'},
-  {label:'Tanto faz 🙂', phrase:'no dia que rolar'}
+  {label:'Tanto faz 🙂', phrase:'no dia que rolar', flexible:true}
 ]}
 ];
 
@@ -434,11 +434,18 @@ finishSurvey();
 
 function finishSurvey(){
 const d = answers.drink, b = answers.bar, dia = answers.dia;
-inviteText.innerHTML =
-'topa então tomar <em>' + d.phrase + ' ' + b.phrase + '</em> ' +
+let invite, waText;
+if(dia.flexible){
+// no specific day: end the question at the bar, leave the day open
+invite = 'topa então tomar <em>' + d.phrase + ' ' + b.phrase + '</em> ' +
+'(mas pode ser outro lugar também)? <em>o dia a gente combina</em> 🙂';
+waText = 'aceito! ' + d.phrase + ' tá perfeito, o dia a gente combina — quando você pode?';
+} else {
+invite = 'topa então tomar <em>' + d.phrase + ' ' + b.phrase + '</em> ' +
 '(mas pode ser outro lugar também), <em>' + dia.phrase + '</em>?';
-
-const waText = 'aceito! ' + d.phrase + ' ' + dia.phrase + ' tá perfeito 🙂 quando e onde?';
+waText = 'aceito! ' + d.phrase + ' ' + dia.phrase + ' tá perfeito, quando e onde?';
+}
+inviteText.innerHTML = invite;
 waLink.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(waText);
 
 survey.classList.add('hidden');
