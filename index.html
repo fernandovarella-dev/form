@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>um convite</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500&display=swap');
+
+:root{
+--bg:#f4f4f2;
+--ink:#1f1f1d;
+--muted:#8a8a86;
+--accent:#2f2f2d;
+--accent-soft:#d9d9d5;
+--line:#e2e2de;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+html,body{ height:100%; width:100%; }
+
+body{
+font-family:'Inter',system-ui,sans-serif;
+background:
+radial-gradient(120% 80% at 50% -10%, #fbfbfa 0%, var(--bg) 55%, #ececea 100%);
+color:var(--ink);
+height:100dvh;
+min-height:100dvh;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:24px;
+position:relative;
+width:100%;
+overscroll-behavior:none;
+}
+
+.stage{
+width:100%;
+max-width:440px;
+text-align:center;
+position:relative;
+z-index:2;
+}
+
+.eyebrow{
+font-size:.78rem;
+letter-spacing:.28em;
+text-transform:uppercase;
+color:var(--muted);
+margin-bottom:22px;
+opacity:0;
+animation:rise .8s .1s ease forwards;
+}
+
+h1{
+font-family:'Fraunces',serif;
+font-weight:400;
+font-size:clamp(2.4rem,10vw,3.4rem);
+line-height:1.05;
+letter-spacing:-.02em;
+margin-bottom:44px;
+opacity:0;
+animation:rise .8s .22s ease forwards;
+}
+h1 em{ font-style:italic; color:var(--accent); }
+
+.buttons{
+display:flex;
+gap:14px;
+justify-content:center;
+align-items:center;
+flex-wrap:wrap;
+opacity:0;
+animation:rise .8s .38s ease forwards;
+}
+
+.btn{
+font-family:'Inter',sans-serif;
+font-size:1.05rem;
+font-weight:500;
+border:none;
+cursor:pointer;
+border-radius:100px;
+padding:17px 34px;
+transition:transform .18s ease, box-shadow .25s ease, background .25s ease;
+touch-action:manipulation;
+}
+
+.btn-yes{
+background:var(--accent);
+color:#fff;
+box-shadow:0 10px 26px -10px rgba(31,31,29,.5);
+will-change:transform;
+}
+.btn-yes:hover{ transform:translateY(-2px); }
+.btn-yes:active{ transform:translateY(0) scale(.98); }
+
+.btn-no{
+background:transparent;
+color:var(--muted);
+border:1px solid var(--line);
+}
+/* when it starts running it becomes free-floating */
+.btn-no.loose{
+position:fixed;
+z-index:5;
+margin:0;
+white-space:nowrap;
+}
+
+/* confirmation */
+.confirm{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:14px;
+opacity:0;
+pointer-events:none;
+transform:translateY(8px);
+}
+.confirm.show{
+opacity:1;
+pointer-events:auto;
+transform:translateY(0);
+transition:opacity .6s ease .05s, transform .6s ease .05s;
+}
+.confirm .mark{
+font-family:'Fraunces',serif;
+font-style:italic;
+font-size:clamp(2.2rem,9vw,3rem);
+color:var(--accent);
+}
+.confirm .sub{
+color:var(--muted);
+font-size:1rem;
+letter-spacing:.02em;
+}
+.confirm .wa{
+margin-top:22px;
+display:inline-flex;
+align-items:center;
+gap:9px;
+font-size:.9rem;
+font-weight:500;
+letter-spacing:.01em;
+color:var(--ink);
+text-decoration:none;
+background:#fff;
+border:1px solid var(--line);
+border-radius:100px;
+padding:13px 24px 13px 20px;
+box-shadow:0 8px 22px -14px rgba(31,31,29,.5);
+transition:transform .18s ease, box-shadow .25s ease;
+}
+.confirm .wa:hover{ transform:translateY(-2px); box-shadow:0 12px 26px -14px rgba(31,31,29,.55); }
+.confirm .wa:active{ transform:translateY(0) scale(.98); }
+.confirm .wa svg{ width:17px; height:17px; flex:none; }
+
+.signature{
+margin-top:40px;
+font-size:.8rem;
+letter-spacing:.12em;
+color:var(--muted);
+opacity:0;
+animation:rise .8s .55s ease forwards;
+}
+
+.hidden{ display:none !important; }
+
+@keyframes rise{
+from{ opacity:0; transform:translateY(14px); }
+to{ opacity:1; transform:translateY(0); }
+}
+
+/* confetti hearts */
+.heart{
+position:fixed;
+top:-24px;
+font-size:16px;
+pointer-events:none;
+z-index:4;
+will-change:transform,opacity;
+}
+@keyframes fall{
+to{ transform:translateY(110vh) rotate(320deg); opacity:0; }
+}
+
+@media (prefers-reduced-motion:reduce){
+*{ animation-duration:.001ms !important; }
+.btn-no.loose{ transition:none; }
+}
+</style>
+</head>
+<body>
+<div class="stage">
+<div id="ask">
+<p class="eyebrow">@isaprogin</p>
+<h1>topa <em>um date comigo?</em></h1>
+<div class="buttons">
+<button class="btn btn-yes" id="yes">sim</button>
+<button class="btn btn-no" id="no">não</button>
+</div>
+<p class="signature">@fe.varella</p>
+</div>
+
+<div class="confirm" id="confirm">
+<div class="mark">já to até com crise de ansiedade</div>
+<div class="sub">date confirmado</div>
+<a class="wa" id="waLink" href="#"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24Zm-2.48 4.4c-.15 0-.4.06-.6.28-.2.22-.79.77-.79 1.87s.81 2.17.92 2.32c.11.15 1.57 2.4 3.8 3.36.53.23.95.37 1.27.47.53.17 1.02.14 1.4.09.43-.06 1.32-.54 1.5-1.06.19-.52.19-.97.13-1.06-.06-.09-.2-.15-.42-.26-.22-.11-1.32-.65-1.53-.72-.2-.08-.35-.11-.5.11-.15.22-.57.72-.7.87-.13.15-.26.17-.48.06-.22-.11-.94-.35-1.79-1.11-.66-.59-1.11-1.32-1.24-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.21-.68-1.66-.18-.43-.37-.37-.5-.38h-.42Z"/></svg>abrir no whatsapp</a>
+</div>
+</div>
+
+<script>
+(function(){
+const WA_URL = "https://wa.me/5511991897898?text=" +
+encodeURIComponent("aceito, quando e onde?");
+
+const yes = document.getElementById('yes');
+const no = document.getElementById('no');
+const ask = document.getElementById('ask');
+const confirm = document.getElementById('confirm');
+const waLink = document.getElementById('waLink');
+waLink.href = WA_URL;
+
+const phrases = ["tem certeza?","pensa melhor","opção inválida","tenta de novo","não aceito essa resposta","última chance 👀"];
+let idx = 0, yesScale = 1, loose = false;
+
+function vw(){ return (window.visualViewport && window.visualViewport.width) || window.innerWidth; }
+function vh(){ return (window.visualViewport && window.visualViewport.height) || window.innerHeight; }
+
+function moveNo(e){
+if(!loose){
+no.classList.add('loose');
+// escape .buttons: its leftover animation transform would make position:fixed
+// relative to it (not the viewport) and throw the button off-screen
+document.body.appendChild(no);
+loose = true;
+}
+// set the phrase first, then measure the new size
+no.textContent = phrases[idx % phrases.length];
+idx++;
+const pad = 14;
+const w = no.offsetWidth, h = no.offsetHeight;
+const W = vw(), H = vh();
+
+// current center of the button
+const rect = no.getBoundingClientRect();
+let cx = rect.left + w/2, cy = rect.top + h/2;
+if(!isFinite(cx) || rect.width === 0){ cx = W/2; cy = H*0.62; }
+
+// the point to run away from: the finger/cursor if we have it
+let px = cx, py = cy;
+if(e){
+const t = e.touches && e.touches[0];
+if(t){ px = t.clientX; py = t.clientY; }
+else if(e.clientX != null){ px = e.clientX; py = e.clientY; }
+}
+
+// direction away from the finger; if it's dead-center, pick a random angle
+let dx = cx - px, dy = cy - py;
+let dist = Math.hypot(dx, dy);
+if(dist < 1){ const a = Math.random()*Math.PI*2; dx = Math.cos(a); dy = Math.sin(a); dist = 1; }
+
+// hop a short, readable distance and stay on screen
+const hop = Math.min(150, Math.max(90, Math.min(W, H) * 0.4));
+let x = cx + (dx/dist)*hop - w/2;
+let y = cy + (dy/dist)*hop - h/2;
+x = Math.max(pad, Math.min(x, W - w - pad));
+y = Math.max(pad, Math.min(y, H - h - pad));
+no.style.left = x + 'px';
+no.style.top = y + 'px';
+
+yesScale = Math.min(yesScale + 0.06, 1.6);
+yes.style.transform = 'scale(' + yesScale + ')';
+}
+
+function flee(e){ if(e && e.cancelable) e.preventDefault(); moveNo(e); }
+
+// pointer events cover mouse hover + touch/pen on modern browsers
+no.addEventListener('pointerenter', flee);
+no.addEventListener('pointerdown', flee);
+// fallback for older mobile safari that fires touch before pointer
+no.addEventListener('touchstart', flee, {passive:false});
+
+// keep it inside if the viewport resizes / rotates
+function clampNo(){
+if(!loose) return;
+const pad = 14, w = no.offsetWidth, h = no.offsetHeight;
+const x = Math.min(parseFloat(no.style.left)||0, vw() - w - pad);
+const y = Math.min(parseFloat(no.style.top)||0, vh() - h - pad);
+no.style.left = Math.max(pad, x) + 'px';
+no.style.top = Math.max(pad, y) + 'px';
+}
+window.addEventListener('resize', clampNo);
+if(window.visualViewport) window.visualViewport.addEventListener('resize', clampNo);
+
+function hearts(){
+for(let i=0;i<14;i++){
+const s = document.createElement('span');
+s.className = 'heart';
+s.textContent = '·';
+s.style.left = Math.random()*100 + 'vw';
+s.style.color = Math.random() > .5 ? '#8a8a86' : '#c9c9c4';
+s.style.fontSize = (14 + Math.random()*16) + 'px';
+const dur = 2.6 + Math.random()*1.8;
+s.style.animation = 'fall ' + dur + 's linear ' + (Math.random()*0.5) + 's forwards';
+document.body.appendChild(s);
+setTimeout(()=>s.remove(), (dur+1)*1000);
+}
+}
+
+function accept(){
+ask.classList.add('hidden');
+if(no.classList.contains('loose')) no.remove();
+confirm.classList.add('show');
+hearts();
+// no auto-redirect: she taps "abrir no whatsapp" herself (reliable on iOS)
+}
+
+yes.addEventListener('click', accept);
+})();
+</script>
+</body>
+</html>
